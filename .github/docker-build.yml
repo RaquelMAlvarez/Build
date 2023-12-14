@@ -1,4 +1,4 @@
-name: Docker Build
+name: Docker Build and Test
 
 on:
   push:
@@ -15,3 +15,15 @@ jobs:
 
       - name: Build Docker image
         run: docker build -t raquel460/nodejs-server:v1 .
+
+      - name: Run container from image
+        run: |
+          docker run -d --name test-container raquel460/nodejs-server:v1
+
+      - name: Check running container
+        run: docker ps -a
+
+      - name: Run tests inside container
+        run: |
+          docker exec test-container npm test
+
